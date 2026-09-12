@@ -78,8 +78,7 @@ Snowflake ANALYTICS
       v
 BI / Analytics
 
-'''text
-
+```
 ## 🗂️ Project Structure
 
 ```text

@@ -81,16 +81,18 @@ models:
         tests:
           - not_null
           - relationships:
-              to: ref('dim_accounts')
-              field: account_id
+              arguments:
+                to: ref('dim_accounts')
+                field: account_id
 
       - name: merchant_id
         description: "Merchant associated with the transaction."
         tests:
           - not_null
           - relationships:
-              to: ref('dim_merchants')
-              field: merchant_id
+              arguments:
+                to: ref('dim_merchants')
+                field: merchant_id
 
       - name: merchant_name
         description: "Name of the merchant."

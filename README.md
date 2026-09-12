@@ -104,3 +104,11 @@ FinSight-Portfolio-Project/
 ├── dbt_project.yml
 ├── .gitignore
 └── README.md
+
+
+## 🔗 Quick Links            
+
+- 📦 [GitHub Repository](https://github.com/ShivaKumar-DE-AWS/FinSight-Portfolio-Project/tree/main)
+- 🧱 [dbt Models](https://github.com/ShivaKumar-DE-AWS/FinSight-Portfolio-Project/tree/main/models)
+- 🧪 [dbt Tests](https://github.com/ShivaKumar-DE-AWS/FinSight-Portfolio-Project/tree/main/tests)
+- 📸 [Architecture Diagram](https://github.com/ShivaKumar-DE-AWS/FinSight-Portfolio-Project/blob/main/finSight_architecture.png)

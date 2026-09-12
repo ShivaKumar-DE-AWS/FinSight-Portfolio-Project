@@ -2,7 +2,6 @@
 
 {{
     config(
-        target_schema='ANALYTICS_DEV',
         unique_key='account_id',
         strategy='check',
         check_cols=[

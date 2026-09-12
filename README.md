@@ -17,6 +17,9 @@ SCD Type 2 history tracking, and automated data-quality validation.
 
 ## 🏗️ Architecture
 
+![FinSight Architecture](finSight_architecture.png)
+
+
 ```text
 Python / Faker
       |
@@ -101,5 +104,3 @@ FinSight-Portfolio-Project/
 ├── dbt_project.yml
 ├── .gitignore
 └── README.md
-
-![FinSight Architecture](finSight_architecture.png)

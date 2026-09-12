@@ -101,3 +101,5 @@ FinSight-Portfolio-Project/
 ├── dbt_project.yml
 ├── .gitignore
 └── README.md
+
+![FinSight Architecture](finSight_architecture.png)

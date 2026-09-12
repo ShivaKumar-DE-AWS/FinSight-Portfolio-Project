@@ -3,128 +3,228 @@ version: 2
 models:
 
   - name: staging_transactions
-    description: "Clean staging layer for banking transactions."
+    description: >
+      Clean staging layer for banking transactions. Standardizes the raw
+      Snowflake transaction data and exposes transaction, merchant, risk,
+      and ingestion attributes for downstream analytics.
 
     columns:
+
       - name: transaction_id
-        description: "Unique transaction identifier."
+        description: "Unique identifier for each banking transaction."
         tests:
           - not_null
           - unique
 
       - name: account_id
-        description: "Customer/account identifier."
+        description: "Unique customer account associated with the transaction."
         tests:
           - not_null
 
       - name: merchant_id
-        description: "Merchant identifier."
-        tests:
-          - not_null
-
-      - name: amount
-        description: "Transaction amount."
-        tests:
-          - not_null
-
-      - name: transaction_timestamp
-        description: "Transaction timestamp."
-        tests:
-          - not_null
-
-      - name: is_fraud
-        description: "Fraud indicator."
-        tests:
-          - not_null
-
-  - name: fact_transactions
-    description: "Central transaction fact table."
-
-    columns:
-      - name: transaction_id
-        description: "Unique transaction identifier."
-        tests:
-          - not_null
-          - unique
-
-      - name: account_id
-        description: "Account identifier."
-        tests:
-          - not_null
-
-      - name: merchant_id
-        description: "Merchant identifier."
+        description: "Unique merchant associated with the transaction."
         tests:
           - not_null
 
       - name: merchant_category
-        description: "Merchant category."
+        description: "Original merchant category associated with the transaction."
         tests:
           - not_null
 
       - name: amount
-        description: "Transaction amount."
+        description: "Monetary value of the transaction."
         tests:
           - not_null
 
       - name: transaction_timestamp
-        description: "Transaction timestamp."
+        description: "Timestamp when the transaction occurred."
         tests:
           - not_null
 
       - name: transaction_date
-        description: "Transaction date."
+        description: "Calendar date on which the transaction occurred."
         tests:
           - not_null
 
       - name: is_fraud
-        description: "Fraud indicator."
+        description: "Fraud indicator where 1 represents fraud and 0 represents a legitimate transaction."
         tests:
           - not_null
 
       - name: risk_score
-        description: "Rule-based risk score."
+        description: "Rule-based risk score calculated for the transaction."
         tests:
           - not_null
 
       - name: risk_tier
-        description: "Transaction risk tier."
+        description: "Risk classification assigned to the transaction."
         tests:
           - not_null
 
-  - name: dim_accounts
-    description: "Account-level transaction and fraud risk metrics."
+
+  - name: fact_transactions
+    description: >
+      Central transaction fact table containing one record per banking
+      transaction together with merchant, account, fraud, velocity,
+      and risk attributes.
 
     columns:
+
+      - name: transaction_id
+        description: "Unique transaction identifier and primary business key."
+        tests:
+          - not_null
+          - unique
+
       - name: account_id
-        description: "Unique account identifier."
+        description: "Account associated with the transaction."
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_accounts')
+              field: account_id
+
+      - name: merchant_id
+        description: "Merchant associated with the transaction."
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_merchants')
+              field: merchant_id
+
+      - name: merchant_name
+        description: "Name of the merchant."
+
+      - name: merchant_category
+        description: "Merchant category associated with the transaction."
+        tests:
+          - not_null
+
+      - name: merchant_category_bucket
+        description: "Business-level grouping of merchant categories."
+
+      - name: amount
+        description: "Transaction monetary amount."
+        tests:
+          - not_null
+
+      - name: currency
+        description: "Currency in which the transaction was recorded."
+
+      - name: transaction_timestamp
+        description: "Timestamp when the transaction occurred."
+        tests:
+          - not_null
+
+      - name: transaction_date
+        description: "Calendar date of the transaction."
+        tests:
+          - not_null
+
+      - name: transaction_hour
+        description: "Hour of day in which the transaction occurred."
+
+      - name: day_of_week
+        description: "Day of week on which the transaction occurred."
+
+      - name: location
+        description: "Location associated with the transaction."
+
+      - name: payment_method
+        description: "Payment method used for the transaction."
+
+      - name: velocity_24h
+        description: "Transaction velocity calculated over a 24-hour window."
+
+      - name: avg_ticket_size
+        description: "Average transaction amount used as a transaction-level behavioral feature."
+
+      - name: high_value_flag
+        description: "Flag identifying transactions classified as high value."
+
+      - name: is_fraud
+        description: "Fraud indicator where 1 represents fraud and 0 represents legitimate activity."
+        tests:
+          - not_null
+
+      - name: risk_score
+        description: "Rule-based risk score calculated from transaction risk features."
+        tests:
+          - not_null
+
+      - name: risk_tier
+        description: "Transaction risk classification such as HIGH, MEDIUM, or LOW."
+        tests:
+          - not_null
+
+      - name: source_file
+        description: "Source file from which the transaction originated."
+
+      - name: ingestion_timestamp
+        description: "Timestamp at which the transaction was ingested."
+
+
+  - name: dim_accounts
+    description: >
+      Account-level analytical dimension containing transaction activity,
+      fraud history, behavioral metrics, and overall account risk classification.
+
+    columns:
+
+      - name: account_id
+        description: "Unique customer account identifier."
         tests:
           - not_null
           - unique
 
       - name: total_transactions
-        description: "Total transactions for the account."
+        description: "Total number of transactions associated with the account."
         tests:
           - not_null
+
+      - name: total_transaction_amount
+        description: "Total monetary value of transactions associated with the account."
+
+      - name: avg_transaction_amount
+        description: "Average transaction amount for the account."
 
       - name: fraud_transactions
-        description: "Number of fraudulent transactions."
+        description: "Number of fraudulent transactions associated with the account."
         tests:
           - not_null
+
+      - name: has_fraud_history
+        description: "Indicator showing whether the account has any historical fraudulent transaction."
+        tests:
+          - not_null
+
+      - name: last_transaction_timestamp
+        description: "Timestamp of the most recent transaction for the account."
+
+      - name: max_velocity_24h
+        description: "Maximum observed 24-hour transaction velocity for the account."
+
+      - name: max_risk_score
+        description: "Maximum transaction risk score observed for the account."
 
       - name: account_risk_tier
-        description: "Overall account risk tier."
+        description: "Overall account-level risk classification."
         tests:
           - not_null
+
 
   - name: dim_merchants
-    description: "Merchant-level transaction and fraud metrics."
+    description: >
+      Merchant-level analytical dimension containing transaction volume,
+      transaction value, fraud activity, and merchant risk metrics.
 
     columns:
+
       - name: merchant_id
-        description: "Merchant identifier."
+        description: "Unique merchant identifier."
         tests:
           - not_null
+          - unique
 
       - name: merchant_name
         description: "Merchant name."
@@ -132,46 +232,83 @@ models:
           - not_null
 
       - name: merchant_category
-        description: "Merchant category."
+        description: "Original merchant category."
         tests:
           - not_null
+
+      - name: merchant_category_bucket
+        description: "Business grouping of merchant categories."
 
       - name: total_transactions
-        description: "Total transactions for the merchant."
+        description: "Total number of transactions associated with the merchant."
         tests:
           - not_null
+
+      - name: total_transaction_amount
+        description: "Total monetary transaction value for the merchant."
+
+      - name: avg_transaction_amount
+        description: "Average transaction amount for the merchant."
+
+      - name: fraud_transactions
+        description: "Number of fraudulent transactions associated with the merchant."
 
       - name: fraud_rate_pct
-        description: "Percentage of fraudulent transactions."
+        description: "Percentage of merchant transactions identified as fraudulent."
         tests:
           - not_null
 
+      - name: max_risk_score
+        description: "Maximum transaction risk score observed for the merchant."
+
+      - name: merchant_risk_tier
+        description: "Overall merchant risk classification."
+
+
   - name: agg_daily_fraud_risk
-    description: "Daily transaction and fraud-risk aggregation."
+    description: >
+      Daily fraud and transaction risk aggregation used for monitoring
+      transaction volume, fraud rates, risk distribution, and average risk.
 
     columns:
+
       - name: transaction_date
-        description: "Transaction date."
+        description: "Calendar date represented by the daily aggregation."
         tests:
           - not_null
           - unique
 
       - name: total_transactions
-        description: "Total transactions for the day."
+        description: "Total number of transactions recorded on the day."
         tests:
           - not_null
 
+      - name: total_transaction_amount
+        description: "Total monetary transaction value for the day."
+
       - name: fraud_transactions
-        description: "Fraudulent transactions for the day."
+        description: "Number of fraudulent transactions recorded on the day."
         tests:
           - not_null
 
       - name: fraud_rate_pct
-        description: "Daily fraud rate percentage."
+        description: "Percentage of daily transactions identified as fraudulent."
         tests:
           - not_null
 
+      - name: high_risk_transactions
+        description: "Number of HIGH-risk transactions recorded on the day."
+
+      - name: medium_risk_transactions
+        description: "Number of MEDIUM-risk transactions recorded on the day."
+
+      - name: low_risk_transactions
+        description: "Number of LOW-risk transactions recorded on the day."
+
+      - name: avg_transaction_amount
+        description: "Average transaction amount for the day."
+
       - name: avg_risk_score
-        description: "Average daily risk score."
+        description: "Average transaction risk score for the day."
         tests:
           - not_null

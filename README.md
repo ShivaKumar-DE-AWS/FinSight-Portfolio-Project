@@ -67,3 +67,37 @@ Snowflake ANALYTICS
       |
       v
 BI / Analytics
+
+## 🗂️ Project Structure
+
+```text
+FinSight-Portfolio-Project/
+│
+├── models/
+│   ├── sources.yml
+│   ├── schema.yml
+│   │
+│   ├── staging/
+│   │   └── staging_transactions.sql
+│   │
+│   └── marts/
+│       ├── fact_transactions.sql
+│       ├── dim_accounts.sql
+│       ├── dim_merchants.sql
+│       └── agg_daily_fraud_risk.sql
+│
+├── snapshots/
+│   └── dim_accounts_snapshot.sql
+│
+├── tests/
+│   ├── valid_fraud_flag.sql
+│   └── positive_transaction_amount.sql
+│
+├── macros/
+├── analyses/
+├── seeds/
+├── Tests/
+│
+├── dbt_project.yml
+├── .gitignore
+└── README.md

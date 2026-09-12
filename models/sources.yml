@@ -1,0 +1,80 @@
+version: 2
+
+sources:
+  - name: finsight_raw
+    database: FINSIGHT
+    schema: RAW
+
+    description: "Raw transaction data loaded from S3 through Snowpipe."
+
+    tables:
+      - name: raw_transactions
+
+        description: "Silver transaction data landed in Snowflake RAW."
+
+        columns:
+          - name: transaction_id
+            description: "Unique transaction identifier."
+
+          - name: account_id
+            description: "Customer/account identifier."
+
+          - name: merchant_id
+            description: "Merchant identifier."
+
+          - name: merchant_name
+            description: "Merchant name."
+
+          - name: merchant_category
+            description: "Original merchant category."
+
+          - name: amount
+            description: "Transaction amount."
+
+          - name: currency
+            description: "Transaction currency."
+
+          - name: transaction_timestamp
+            description: "Timestamp when the transaction occurred."
+
+          - name: transaction_date
+            description: "Transaction date."
+
+          - name: transaction_hour
+            description: "Hour of transaction."
+
+          - name: day_of_week
+            description: "Day of week for the transaction."
+
+          - name: location
+            description: "Transaction location."
+
+          - name: payment_method
+            description: "Payment method used."
+
+          - name: merchant_category_bucket
+            description: "Business grouping of merchant categories."
+
+          - name: velocity_24h
+            description: "Transaction velocity within a 24-hour window."
+
+          - name: avg_ticket_size
+            description: "Average transaction ticket size."
+
+          - name: high_value_flag
+            description: "Flag identifying high-value transactions."
+
+          - name: is_fraud
+            description: "Fraud indicator: 1 = fraud, 0 = legitimate."
+
+          - name: risk_score
+            description: "Rule-based transaction risk score."
+
+          - name: risk_tier
+            description: "Rule-based transaction risk tier."
+
+          - name: source_file
+            description: "Original source file."
+
+          - name: ingestion_timestamp
+            description: "Timestamp when the record was ingested."

@@ -1,0 +1,177 @@
+version: 2
+
+models:
+
+  - name: staging_transactions
+    description: "Clean staging layer for banking transactions."
+
+    columns:
+      - name: transaction_id
+        description: "Unique transaction identifier."
+        tests:
+          - not_null
+          - unique
+
+      - name: account_id
+        description: "Customer/account identifier."
+        tests:
+          - not_null
+
+      - name: merchant_id
+        description: "Merchant identifier."
+        tests:
+          - not_null
+
+      - name: amount
+        description: "Transaction amount."
+        tests:
+          - not_null
+
+      - name: transaction_timestamp
+        description: "Transaction timestamp."
+        tests:
+          - not_null
+
+      - name: is_fraud
+        description: "Fraud indicator."
+        tests:
+          - not_null
+
+  - name: fact_transactions
+    description: "Central transaction fact table."
+
+    columns:
+      - name: transaction_id
+        description: "Unique transaction identifier."
+        tests:
+          - not_null
+          - unique
+
+      - name: account_id
+        description: "Account identifier."
+        tests:
+          - not_null
+
+      - name: merchant_id
+        description: "Merchant identifier."
+        tests:
+          - not_null
+
+      - name: merchant_category
+        description: "Merchant category."
+        tests:
+          - not_null
+
+      - name: amount
+        description: "Transaction amount."
+        tests:
+          - not_null
+
+      - name: transaction_timestamp
+        description: "Transaction timestamp."
+        tests:
+          - not_null
+
+      - name: transaction_date
+        description: "Transaction date."
+        tests:
+          - not_null
+
+      - name: is_fraud
+        description: "Fraud indicator."
+        tests:
+          - not_null
+
+      - name: risk_score
+        description: "Rule-based risk score."
+        tests:
+          - not_null
+
+      - name: risk_tier
+        description: "Transaction risk tier."
+        tests:
+          - not_null
+
+  - name: dim_accounts
+    description: "Account-level transaction and fraud risk metrics."
+
+    columns:
+      - name: account_id
+        description: "Unique account identifier."
+        tests:
+          - not_null
+          - unique
+
+      - name: total_transactions
+        description: "Total transactions for the account."
+        tests:
+          - not_null
+
+      - name: fraud_transactions
+        description: "Number of fraudulent transactions."
+        tests:
+          - not_null
+
+      - name: account_risk_tier
+        description: "Overall account risk tier."
+        tests:
+          - not_null
+
+  - name: dim_merchants
+    description: "Merchant-level transaction and fraud metrics."
+
+    columns:
+      - name: merchant_id
+        description: "Merchant identifier."
+        tests:
+          - not_null
+
+      - name: merchant_name
+        description: "Merchant name."
+        tests:
+          - not_null
+
+      - name: merchant_category
+        description: "Merchant category."
+        tests:
+          - not_null
+
+      - name: total_transactions
+        description: "Total transactions for the merchant."
+        tests:
+          - not_null
+
+      - name: fraud_rate_pct
+        description: "Percentage of fraudulent transactions."
+        tests:
+          - not_null
+
+  - name: agg_daily_fraud_risk
+    description: "Daily transaction and fraud-risk aggregation."
+
+    columns:
+      - name: transaction_date
+        description: "Transaction date."
+        tests:
+          - not_null
+          - unique
+
+      - name: total_transactions
+        description: "Total transactions for the day."
+        tests:
+          - not_null
+
+      - name: fraud_transactions
+        description: "Fraudulent transactions for the day."
+        tests:
+          - not_null
+
+      - name: fraud_rate_pct
+        description: "Daily fraud rate percentage."
+        tests:
+          - not_null
+
+      - name: avg_risk_score
+        description: "Average daily risk score."
+        tests:
+          - not_null

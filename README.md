@@ -20,6 +20,13 @@ SCD Type 2 history tracking, and automated data-quality validation.
 ![FinSight Architecture](finSight_architecture.png)
 
 
+## 🔗 Quick Links            
+
+- 📦 [GitHub Repository](https://github.com/ShivaKumar-DE-AWS/FinSight-Portfolio-Project/tree/main)
+- 🧱 [dbt Models](https://github.com/ShivaKumar-DE-AWS/FinSight-Portfolio-Project/tree/main/models)
+- 🧪 [dbt Tests](https://github.com/ShivaKumar-DE-AWS/FinSight-Portfolio-Project/tree/main/tests)
+- 📸 [Architecture Diagram](https://github.com/ShivaKumar-DE-AWS/FinSight-Portfolio-Project/blob/main/finSight_architecture.png)
+
 ```text
 Python / Faker
       |
@@ -71,6 +78,8 @@ Snowflake ANALYTICS
       v
 BI / Analytics
 
+'''text
+
 ## 🗂️ Project Structure
 
 ```text
@@ -104,11 +113,3 @@ FinSight-Portfolio-Project/
 ├── dbt_project.yml
 ├── .gitignore
 └── README.md
-
-
-## 🔗 Quick Links            
-
-- 📦 [GitHub Repository](https://github.com/ShivaKumar-DE-AWS/FinSight-Portfolio-Project/tree/main)
-- 🧱 [dbt Models](https://github.com/ShivaKumar-DE-AWS/FinSight-Portfolio-Project/tree/main/models)
-- 🧪 [dbt Tests](https://github.com/ShivaKumar-DE-AWS/FinSight-Portfolio-Project/tree/main/tests)
-- 📸 [Architecture Diagram](https://github.com/ShivaKumar-DE-AWS/FinSight-Portfolio-Project/blob/main/finSight_architecture.png)
